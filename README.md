@@ -2,54 +2,132 @@
 
 **Technical Art / Real-time Graphics** · Unity URP water rendering research prototype
 
-**Research Prototype / WIP** · **W3.0 = evidence-backed；W3.1 = WIP**
+**Current status:** **W3.0 Boundary Field = PASS / evidence-backed** · **W3.1 Shoreline & Foam = WIP**
 
-## 要解决的问题
+## HERO water scene
 
-如何让波面、深度、光学与边界共享一致数据，而不让每个效果各自解释坐标、厚度和参数？FluidMatter 用显式数据契约、Debug 通道和参考对照研究实时水渲染。
+**NEEDS_CAPTURE.** A readable real water-scene cover has not yet been captured from the current build. This page intentionally does not promote a Gerstner debug mesh or diagnostic tint as the project hero image.
 
-## Implemented
+**RUN DEMO: NEEDS_CAPTURE.** No short actual-run water demonstration is currently published.
 
-- Linear Eye Depth 与数据有效性；screen-space refraction。
-- Beer–Lambert transmittance；reflection preview。
-- Gerstner wave displacement 与 SurfaceData。
-- Depth-derived boundary field；Profile / binding / shared-material cache。
+## What It Is
 
-![Existing Gerstner validation capture, showing displaced wave mesh](media/gerstner-wave-mesh.png)
+FluidMatter is a real-time water rendering R&D system focused on keeping wave geometry, scene depth, optics, boundary data, authoring profiles and validation under explicit contracts instead of letting each effect reinterpret the same data independently.
 
-上图是已有波面网格验证画面，**不是完成水景封面**。展示封面和短动态演示：**NEEDS_CAPTURE**。
+The current target is quiet, clear shallow-pool / tide-pool water rather than an ocean simulator.
 
-## Results / Evidence
+## Current Build
 
-W3.0 有边界场、validity、参考对照和回归记录。精选 [boundary Debug 与技术拆解](docs/technical-overview.md) 解释“测到了什么”，不把 diagnostic preview 当作完成的岸边泡沫。
+Evidence-backed in the accepted development state:
 
-## Architecture / Pipeline
+- Linear Eye Depth and depth validity handling.
+- Screen-space refraction.
+- Beer–Lambert transmittance / thickness-driven absorption.
+- Reflection preview.
+- Gerstner wave displacement.
+- Shared `SurfaceData` for downstream water shading.
+- Depth-derived `Boundary` field with `thicknessEye`, `proximity` and `valid` semantics.
+- Profile / binding pipeline with shared-material-cache and MPB paths.
+- Debug views and automated validation for the accepted W3.0 boundary contract.
 
-```mermaid
+**Not accepted yet:** shoreline appearance consumer and shoreline foam consumer. W3.1 remains WIP until its own acceptance markers and regression evidence exist.
+
+## Rendering Pipeline
+
+~~~mermaid
 flowchart TD
-    Profile[Authored profile] --> Binding[Binding and material cache]
-    Binding --> Wave[Gerstner displacement and SurfaceData]
-    Wave --> Depth[Linear eye depth and validity]
-    Depth --> Optics[Refraction transmittance reflection preview]
+    Profile[Authored Water Profile] --> Binding[Binding / Shared Material Cache / MPB]
+    Binding --> Wave[Gerstner displacement]
+    Wave --> Surface[SurfaceData]
+    Surface --> Depth[Linear Eye Depth + validity]
+    Depth --> Optics[Refraction + transmittance + reflection preview]
     Depth --> Boundary[Boundary field]
-    Optics --> Evidence[Final and debug captures]
-    Boundary --> Evidence
-```
+    Optics --> Composite[Final water composite]
+    Boundary --> Debug[Boundary / diagnostic views]
+~~~
 
-## WIP / Roadmap
+W3.1 is intentionally not drawn as a completed stage in this pipeline.
 
-**W3.1 = WIP**：shoreline / foam consumer 仍在研发，未完成验收。Roadmap 是补清晰的真实水景、波面与 Debug 动态，并验证 consumer 对既有数据契约的使用。
+## Surface / Waves
 
-本入口不宣称已经完成 shoreline foam、underwater system、FFT ocean、SSR、planar reflection 或 GPU benchmark。
+Gerstner displacement is the accepted surface-motion model in the current build. It supplies the displaced water surface used by later shading and boundary evaluation.
 
-研究连接：将波面几何、厚度与边界场的表达变成可解释的渲染实验与对照方法；未宣称已完成观众研究或性能结论。
+The existing wave capture is retained as **technical evidence**, not as a finished water-scene cover.
 
-## Current Status / Distribution
+## Depth & Optics
 
-[阶段状态与限制](docs/status.md) · [媒体来源与归属](docs/media-attribution.md)
+The project uses one positive Linear Eye Depth convention. Valid scene depth feeds thickness evaluation; optics then use that data for screen-space refraction and Beer–Lambert-style transmittance. Reflection is currently a preview path, not SSR or planar reflection.
 
-Recorded validation context: Tuanjie 2022.3.62t16 / URP 14.2.0-t1 / Direct3D11；不外推其他 API，也不把 headless capture 时间当成 GPU per-pass benchmark。
+Screen-space refraction is limited to information visible in the current scene colour/depth buffers.
 
-Source/project distribution is not currently provided. 本仓库只提供精选技术文档与真实捕获，不包含完整 Unity 项目、源码包或可运行下载；本次没有指定开源许可证。
+## Boundary / Shoreline
+
+### Boundary — implemented / accepted
+
+W3.0 provides an explicit boundary field with:
+
+- `thicknessEye`
+- `proximity`
+- `valid`
+
+Boundary answers **where** a valid water-contact region exists. It does not define foam.
+
+### Shoreline / Foam — WIP
+
+W3.1 is the next active milestone. The intended consumers may read accepted Boundary / SurfaceData, but the public project does **not** claim completed shoreline appearance or foam until W3.1 validation passes.
+
+Current public status:
+
+- Shoreline appearance: **WIP / not accepted**
+- Shoreline foam: **WIP / not accepted**
+- Open-water crest foam / wakes / interaction foam: **not implemented**
+- Underwater rendering: **not implemented**
+
+## Debug & Validation
+
+W3.0 has recorded boundary/reference/capture/regression evidence. The accepted development record reports the W3.0 acceptance and automation markers, green authoritative CSVs, and a 15-gate historical regression with `isolation_unresolved = 0`.
+
+Public showcase media intentionally keeps only a small audited subset:
+
+![Boundary diagnostic preview — not shoreline foam](media/boundary-preview.png)
+
+*Boundary diagnostic preview. This is a diagnostic tint, not a finished shoreline effect.*
+
+![Boundary field debug: proximity / validity / normalized thickness](media/boundary-field.png)
+
+*Boundary debug encoding used by the W3.0 validation rig.*
+
+![Gerstner wave mesh validation](media/gerstner-wave-mesh.png)
+
+*Gerstner wave-mesh validation. Technical evidence only; not the project cover.*
+
+More detail: [technical overview](docs/technical-overview.md) · [status and limitations](docs/status.md) · [media attribution](docs/media-attribution.md)
+
+## Current WIP
+
+**W3.1 — Shoreline & Foam Visual Consumer**
+
+The W3.1 task is to consume the accepted W3.0 Boundary field without redefining it, add a restrained shoreline appearance / shoreline-foam layer, and prove disabled identity, boundary ownership, camera stability, Gerstner coupling, binding parity, temporal stability and full regression.
+
+No W3.1 PASS claim is made from task files, planned shaders, precheck material or roadmap text alone.
+
+## Roadmap
+
+1. Finish and validate W3.1 Shoreline & Foam.
+2. Capture one readable real water-scene HERO image from the accepted build.
+3. Capture one short actual-run water / wave / debug demonstration.
+4. Only after W3.1 passes, consider W4.0 Caustics Foundation as the next milestone.
+
+Roadmap items are not implemented features.
+
+## Limitations
+
+- Research prototype / WIP, not a production-ready water package.
+- Validation context: Tuanjie 2022.3.62t16 · URP 14.2.0-t1 · Direct3D11.
+- Existing reflection path is a preview; **SSR and planar reflection are not implemented**.
+- **Underwater, caustics, FFT ocean, buoyancy and interaction systems are not implemented** in the accepted build.
+- Existing headless/capture timings are not published as GPU per-pass benchmarks.
+- Source/project distribution is not currently provided; this repository contains selected documentation and audited real captures rather than the full Unity project.
+- No open-source license is currently declared for the project distribution.
 
 [Lilith — Portfolio](https://github.com/lilith-techart)
