@@ -7,7 +7,7 @@ quantity, and an automated gate that measures the result instead of a screenshot
 right from one angle.
 
 **Status:** W0 – W3.1 accepted (see [validation scope](#how-much-of-this-is-measured)) ·
-W4.0 caustics implemented, **validation pending** · portfolio scene created, **visual review pending** ·
+W4.0 caustics implemented, **validation pending** · portfolio scene rendering, **art pass in progress** ·
 research prototype, not a product.
 
 ![Two Gerstner waves meeting a shoreline: displaced surface silhouette, foam band following the crest, depth-driven absorption](media/showcase/w31_gerstner_two_wave_shoreline.png)
@@ -33,8 +33,29 @@ marketing render, and no diagnostic view is presented as finished appearance.
 | ![One view rendered three ways: composite, boundary field encoding, validation preview](media/boundary-same-view-three-readings.png) | **One view, three readings.** A = what the build draws. B = the boundary *field* (R proximity, G validity, B normalised thickness). C = a validation tint. Panels B and C are **diagnostic views, not appearance** — they show the data a consumer reads, which is the point of the architecture. <br> Milestone **W3.0** · modes 0 / 10 / 11 · **accepted** · assembled figure |
 | ![Gerstner two-wave superposition with the rig's analytic reference curves](media/gerstner-wave-mesh.png) | **Engineering proof, not a look.** Multi-wave superposition against the harness's CPU reference; the green/blue polylines are the rig's own analytic curves. Published because "the GPU agrees with an independent implementation" is a claim worth showing. <br> Milestone **W2.1** · mode **0** · **accepted** · technical evidence |
 
-**What is deliberately missing from this gallery:** a beauty shot, a video, and any caustics image. See
-[Visual status](#visual-status--what-is-not-here-yet).
+**What is deliberately missing from this gallery:** a beauty cover, a video, and any caustics image. The
+portfolio scene's first technical capture is kept in its own section below, [Development Showcase — Work in
+Progress](#development-showcase--work-in-progress), because it is not a finished look and does not belong in
+a gallery of accepted results.
+
+---
+
+## Development Showcase — Work in Progress
+
+The project's first portfolio scene, `FMS_Showcase_Island`, has been rendered in the real engine. This is the
+one capture from it that is cleared for publication, and it is published as **work in progress**, not as the
+cover.
+
+![Shoreline and foam inside the experimental island scene — development showcase](media/showcase/showcase_island_technical_wip.png)
+
+**Shoreline and Foam — Development Showcase** / Real Tuanjie URP render demonstrating the previously validated shoreline and foam system inside an experimental island environment. The showcase art pass is ongoing; caustics are disabled and the environment reflection input has not yet been completed in this capture.
+
+Provenance, added so the label cannot drift: 1920×1080 single-frame capture from this project's own Tuanjie
+editor on D3D11, byte-exact copy of the engine output (SHA-256 `66fd061306b5ad97…`, full value in
+[media attribution](docs/media-attribution.md)). What this image **is not**: a Final Hero, an accepted W4.0
+result, physically accurate caustics, final commercial art, or a GPU benchmark. The art-directed cover
+candidate from the same scene is rendered but **not published**, pending owner review of a reflection fix in
+progress. The scene's underwater camera view is diagnostic only and is not part of the portfolio.
 
 ---
 
@@ -61,7 +82,7 @@ marketing render, and no diagnostic view is presented as finished appearance.
 |---|---|
 | W0 – W3.1 (depth, refraction, absorption, reflection preview, surface normals, Gerstner, surface-data contract, boundary field, shoreline + foam) | **Accepted**, subject to recorded validation scope |
 | W4.0 Caustics | **Implemented / Validation Pending** — present in the working tree, gated by its own CAU series, **not accepted**, and no image of it is published here |
-| Showcase Island (portfolio scene, cinematic profile, three cameras) | **Scene asset created / Visual review pending** — imported by the engine and structurally validated; **no rendered frame captured yet** |
+| Showcase Island (portfolio scene, cinematic profile, three cameras) | **Art pass in progress** — the scene renders in the real engine; one 1920×1080 technical capture is published under [Development Showcase](#development-showcase--work-in-progress). The Hero cover candidate is rendered but **not published**, pending owner review. The underwater camera is **diagnostic only** |
 | W4.1 / W5 | **Not started** |
 
 ---
@@ -112,8 +133,10 @@ Stated as gaps, not as settled conclusions.
 7. **Caustics are not accepted.** A caustics consumer exists in the working tree and is under its own
    validation series with unresolved failing rows. Nothing here claims physically accurate caustics, flux
    conservation, or a finished underwater look.
-8. **There is no beauty pass yet.** Every image on this page comes from a controlled test rig with known
-   geometry and flat unlit scenery, chosen so the measurements mean something.
+8. **There is no accepted beauty pass yet.** Every gallery image comes from a controlled test rig with known
+   geometry and flat unlit scenery, chosen so the measurements mean something. The one frame from the art
+   scene (`FMS_Showcase_Island`) is published separately as work in progress, and in that capture the
+   environment reflection input was not yet completed — see its caption.
 
 ---
 
@@ -130,10 +153,16 @@ A term appearing in a roadmap, a design note, or an in-progress source file is n
 
 ## Visual status — what is not here yet
 
-**Beauty cover: NEEDS_CAPTURE.** The gallery above is honest engine output from validation rigs. The
-project's first art-directed water scene (`FMS_Showcase_Island`) exists as a scene asset with a cinematic
-profile and three cameras, and has been imported and structurally validated — but it has **not been
-rendered and reviewed yet**, so no image from it is published.
+**Beauty cover: NOT PUBLISHED.** The project's art-directed water scene (`FMS_Showcase_Island`) has been
+rendered in the real engine and one technical capture from it is
+[published above as work in progress](#development-showcase--work-in-progress). A Hero cover candidate from
+the same scene also exists, but the review scored it below the bar for a cover, so it is **held back** rather
+than posted. One bounded art fix (the environment reflection input) is in progress; the cover decision is made
+after that is measured, not before.
+
+**Underwater view: DIAGNOSTIC ONLY.** A third camera looks from below the surface. Its captures are kept as
+internal failure evidence and the status token is `UNSUPPORTED_CAMERA_VIEW`. Nothing here claims full
+underwater rendering, and no underwater frame is published.
 
 **Motion demo: NEEDS_CAPTURE.** No actual-run clip is published.
 

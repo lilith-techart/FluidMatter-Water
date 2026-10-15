@@ -1,9 +1,37 @@
 # Media attribution & publication scope
 
-Every image in `media/` is an **actual capture from this project's own engine runs** on a controlled
-validation rig. No image is AI-generated, no image is a marketing render, and no diagnostic view is
-presented as finished appearance. Copies retain the source pixels; where a figure is assembled, that is
-stated below.
+Every image in `media/` is an **actual capture from this project's own engine runs**, either on a controlled
+validation rig or, for the one development-showcase frame below, in the project's portfolio scene. No image is
+AI-generated, no image is a marketing render, and no diagnostic view is presented as finished appearance.
+Copies retain the source pixels; where a figure is assembled, that is stated below.
+
+## Showcase Island — development showcase (work in progress, published 2026-10-16)
+
+| File | Source capture | Milestone / status | Debug mode | Role |
+|---|---|---|---|---|
+| `showcase/showcase_island_technical_wip.png` | `Assets/FluidMatter/Showcase/Screenshots/B02_Final_Technical.png`, which is **byte-identical** to the engine's `B05_Technical_RAW.png` | `FMS_Showcase_Island` portfolio scene; W3.1 shoreline + foam accepted, **art pass in progress** | 0 = final composite | **Development showcase, not a cover.** The island bay seen from `Camera_Technical` (position `8, 12, 18`, euler `24.18927, 243.9464, 0`, FOV 38°, near/far 0.1/200), 1920×1080, wave phase frozen at `t = 14 s` |
+
+Run conditions recorded by the capture harness itself (`B05_RENDER_HEALTH.json`, `B05_CAPTURE_LOG.txt`):
+Tuanjie 1.10.4 / `2022.3.62t16`, batch mode, `NVIDIA GeForce RTX 4070`, `Direct3D11`, Gamma colour space,
+pipeline `FMS_W0_URP`, scene root count 90, `missingScriptComponents = 0`, shader `FluidMatter/FMS_Water`
+`isSupported = True`, `shaderHasError = False`, rendered material `FMS_W0_SharedCache_0` through the
+`SharedMaterialCache` backend. Frame health: `nonBlackRatio = 1`, `magentaRatio = 0`,
+`distinctColors8bit = 205`, `pixelsAuthoredVsWaterOff = 993534`. The linear-buffer capture was encoded with
+`LinearToGammaSpace` into an 8-bit sRGB PNG. The harness never saved the scene (`sceneSaved = 0`).
+
+Shader properties read back from the rendered material at capture time — this is what the image does and does
+not contain: `_FMS_WaveCount = 4`, `_FMS_ShorelineEnabled = 1`, `_FMS_FoamEnabled = 1`,
+`_FMS_FoamCoverage = 0.42`, `_FMS_DebugMode = 0`, **`_FMS_CausticsEnabled = 0`**,
+**`_FMS_EnvironmentReflectionAvailable = 0` with `envCube = null`**. So the visible water has accepted
+shoreline and foam, no caustics at all, and **no completed environment reflection input**. The scene's
+`ReflectionProbe_Sky` is Realtime/HD with `texture = null` in this headless path, and ambient mode is
+Trilight — which is precisely why the caption says the reflection input has not been completed rather than
+implying a sky reflection is present.
+
+Published under explicit owner decision D-01 as a Development Showcase image, and deliberately **not** as the
+front-page cover. It is not a Final Hero, not W4.0 acceptance, not physically accurate caustics, not final
+commercial art, and not a GPU benchmark. A Hero cover candidate from the same scene exists and is scored below
+the publication bar, so it is withheld pending an art fix (see *What is deliberately absent*).
 
 ## W3.1 — shoreline & foam (accepted milestone, published 2026-10-15)
 
@@ -33,6 +61,7 @@ root-caused to a gate inheriting boundary state from the previous arm, and is ar
 ## Integrity hashes (SHA-256, first 16 hex) of the published bytes
 
 ```
+showcase/showcase_island_technical_wip.png     1920x1080   920939 B   66fd061306b5ad97
 showcase/w31_gerstner_two_wave_shoreline.png   1280x720   164448 B   7792b00c5d75e9fa
 showcase/w31_wall_shoreline_closeup.png        1280x720   104426 B   51d9e864ee471d4e
 showcase/w31_flat_clear_pool.png               1280x720    79406 B   7e9f8ece0934c5d3
@@ -44,12 +73,19 @@ boundary-field.png                             1280x720    20951 B   5369aa2de7c
 gerstner-wave-mesh.png                          960x540   127474 B   b1229eebb60f68dd
 ```
 
+Full value for the development-showcase frame, since it is the one published image whose claim depends on
+being the engine's own bytes:
+`66fd061306b5ad97eba3b6e0da469363df08e5cf1511bc57bfa49d268505d5f9` (920,939 bytes). The same digest is recorded
+by the capture harness inside `B05_RENDER_HEALTH.json` under `frame_B05_Technical_RAW.png_sha256`, so the
+published file, `B02_Final_Technical.png` and the RAW engine output are one and the same byte stream.
+
 The four W3.1 single-panel files are **byte-exact copies** of their named sources — not recompressed, so no
 lossy or generative alteration is even possible. `current-build-composite.png`, `boundary-preview.png`,
 `boundary-field.png` and `gerstner-wave-mesh.png` are likewise byte-identical copies. The two assembled
 figures (`w31_consumers_off_on_same_camera.png`, `boundary-same-view-three-readings.png`) are unmodified
 panels, Lanczos-resized and labelled, on a neutral canvas. No pixels were painted, retouched, or
-substituted in any image here, and every assembled figure says so in its caption.
+substituted in any image here, and every assembled figure says so in its caption. `showcase_island_technical_wip.png`
+is also a byte-exact copy, made with `cp` and confirmed by `cmp` against its source in the development tree.
 
 ## Selection method, so the omissions are auditable
 
@@ -75,6 +111,13 @@ Rejected with reasons, rather than silently dropped:
 
 ## Attribution corrections made during earlier audits, recorded rather than silently fixed
 
+- **This document previously stated "the project has no art-directed water scene capture yet."** That became
+  false when `FMS_Showcase_Island` was rendered. The correction is recorded here instead of the sentence being
+  quietly rewritten. Actual state: the art scene **has** been captured in the real engine; one technical frame
+  is now published above as work in progress, and the **Hero cover candidate is still withheld** because the
+  visual review scored it below the bar for a cover. So "no *published* beauty cover" remains true; "no
+  art-directed capture exists" does not.
+
 - `gerstner-wave-mesh.png` was previously described only as a "wave validation capture". It is in fact
   rendered at debug mode 0 (final composite); the line overlay visible in it comes from the validation rig's
   analytic reference curves, which is exactly why it does not read as water and is not used as a cover.
@@ -83,9 +126,14 @@ Rejected with reasons, rather than silently dropped:
 
 ## What is deliberately absent
 
-- **No HERO beauty pass.** The project has no art-directed water scene capture yet. The front image is an
-  accepted W3.1 technical capture, explicitly labelled as one. This is listed as `NEEDS_CAPTURE` in the
-  README and status doc instead of being filled with a debug mesh, a diagnostic tint, or a generated image.
+- **No published HERO cover.** The art-directed scene has real captures, and one of them is published above as
+  a development showcase, but the Hero frame is **held back**: the review scored it below the bar for a cover
+  and one bounded art fix (the environment reflection input) is in progress. The front image stays an accepted
+  W3.1 technical capture, explicitly labelled as one. This is listed as *not published* in the README and
+  status doc instead of being filled with a debug mesh, a diagnostic tint, or a generated image.
+- **No underwater imagery.** The scene's third camera looks from below the surface and its frames are kept as
+  internal failure evidence with status `UNSUPPORTED_CAMERA_VIEW`. No underwater frame is published, and
+  nothing in this repository claims full underwater rendering.
 - **No motion demo.** No actual-run clip is published yet.
 - **No caustics imagery.** See the W4.0 rejection above.
 - **No raw internal logs or gate reports.** The private development record is not mirrored here; this

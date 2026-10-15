@@ -1,6 +1,6 @@
 # FluidMatter — Status
 
-更新时间：2026-10-15。
+更新时间：2026-10-16。
 
 **Overall: real-time water rendering Research Prototype / 持续研发中。**
 
@@ -31,11 +31,21 @@ Beer–Lambert transmittance、reflection **preview**、Gerstner 位移（最多
 CAU 自动化系列），其验收序列仍有未通过的 failing rows。**本仓库不发布任何 W4.0 图像，也不声称焦散的
 物理正确性、flux 守恒或水下渲染。** "implemented" 与 "accepted" 是两个不同的词，这里刻意分开使用。
 
-## Scene asset created, visual review pending
+## Portfolio scene rendered, art pass in progress
 
 `FMS_Showcase_Island` 是项目第一个作品集展示场景（岛屿海湾、水体表面、cinematic profile、三台相机）。
-它已被引擎导入并通过结构化校验（引用完整、无编译错误、无缺失引用），但**尚未渲染、尚未人工审阅**，
-因此没有任何该场景的图像公开发布。
+它已被引擎导入、通过结构化校验，并在真实 Tuanjie 编辑器（D3D11、RTX 4070）中以 1920×1080 渲染出三台相机的
+画面。其中一张 **technical** 捕获以 **Development Showcase / Work in Progress** 的名义公开发布，
+README 首图仍然不使用它。
+
+**该图的准确边界（由捕获当帧的材质回读给出，不是事后描述）：** `_FMS_ShorelineEnabled = 1`、
+`_FMS_FoamEnabled = 1`、`_FMS_DebugMode = 0`、**`_FMS_CausticsEnabled = 0`**、
+**`_FMS_EnvironmentReflectionAvailable = 0` 且 `envCube = null`**。也就是说画面里有已接受的岸线与泡沫，
+没有任何焦散，也没有完成天空环境反射输入。
+
+Hero 封面候选**已渲染但暂不公开**：视觉复审分数低于封面门槛，且正在进行一轮有界的美术修复（反射输入）。
+水下相机为 **DIAGNOSTIC ONLY**，状态标记 `UNSUPPORTED_CAMERA_VIEW`，其画面作为失败证据保留，不公开发布，
+本仓库也不声称完整水下渲染。
 
 ## Not implemented / not claimed
 
@@ -45,10 +55,12 @@ flow map、buoyancy、GPU benchmark、跨 API 认证。
 
 ## Visual status
 
-**NEEDS_CAPTURE（真实水景封面）**：首页图片是 accepted W3.1 技术捕获，并明确标注为验证 rig，而非美术成品。
-仓库不使用 debug mesh 或诊断色块充当项目主视觉。
+**封面：已渲染，暂不公开（NOT PUBLISHED）**。首页图片仍是 accepted W3.1 技术捕获并明确标注为验证 rig；
+展示场景的一张 technical 帧单独放在 Development Showcase 段落。仓库不使用 debug mesh 或诊断色块充当项目
+主视觉，也不使用生成图像。
 **NEEDS_CAPTURE（短动态演示）**：尚无 actual-run 视频。
-未使用任何生成图像冒充引擎运行结果。
+**水下视图：DIAGNOSTIC ONLY / `UNSUPPORTED_CAMERA_VIEW`**，不发布、不声称功能。
+未使用任何生成图像冒充引擎运行结果；若使用程序生成的环境素材，会明确标注为程序生成，而不宣称为摄影 HDRI。
 
 ## Validation scope
 
@@ -57,8 +69,8 @@ Tuanjie 1.10.4（Unity 兼容版本 2022.3.62t16）、URP 14.2.0-t1、D3D11、�
 
 ## Roadmap
 
-完成 W4.0 焦散验证 → 渲染并审阅 showcase 场景 → 补真实 cover 与短动态 → 如需性能结论则单独设计
-Player/GPU 测量。
+完成 W4.0 焦散验证 → showcase 场景美术收口（已渲染；封面候选等待反射输入修复后复审）→ 补真实 cover 与短动态
+→ 如需性能结论则单独设计 Player/GPU 测量。
 
 ## Distribution
 
