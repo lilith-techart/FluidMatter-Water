@@ -62,7 +62,7 @@ analytic derivative frame against central differences, and includes a counterfac
   a **preview** path. It is not screen-space reflection and not planar reflection, and the availability of
   environment content is gated by an explicit flag so the shader never consumes undefined probe data.
 
-## Boundary field (accepted as data)
+## Boundary field (accepted as data at W3.0)
 
 ```
 FMS_BoundaryData {
@@ -76,8 +76,42 @@ Evaluation consumes the interpolated `SurfaceData.positionWS`, i.e. the displace
 tracks moving waves instead of the flat plane. A zero-width band legitimately leaves `valid = 1` with
 `proximity = 0`; a sky or foreground-rejected pixel leaves `valid = 0`.
 
-**No production look consumes the boundary at the accepted state.** The only consumers are a debug readout
-and a validation preview, and accepted profiles author the feature off (`_boundaryEnabled: 0`).
+W3.0 delivered the field with **no** appearance consumer: the accepted profiles at that milestone authored
+it off (`_boundaryEnabled: 0`), and the only readings of it were a debug encoding and a validation preview.
+That is the historical state of W3.0, and it is stated here because the whole point of the milestone was to
+publish trustworthy data before anyone was allowed to make it pretty.
+
+## Shoreline & foam consumer (accepted at W3.1)
+
+W3.1 is the first production consumer of the boundary field, and it consumes it without redefining it. One
+dependency arrow, one direction:
+
+```
+FMS_BoundaryData   ->  WHERE water meets scene geometry   (W3.0, unchanged by W3.1)
+FMS_Shoreline      ->  HOW that region looks              (W3.1)
+foam               ->  ONE visual effect that consumes it (W3.1)
+```
+
+The consumer module returns exactly three values — `shorelineMask`, `foamBreakup`, `foamMask` — and
+deliberately nothing else. No foam colour, no wetness, no history buffer, no velocity, no flow, no
+curvature, no scene normal, no shore direction live here; colours are read at the composition site where
+they are authored, and a quantity with no consumer is not invented to have one.
+
+Two decisions were made by measurement rather than taste:
+
+- **W3.0's `proximity` stays linear.** An eased field cannot be inverted back to a distance, so the easing
+  lives only in the consumer: `shape(p) = p·p·(3 − 2p)`. A four-candidate study (linear / smoothstep /
+  pow / two-stage smootherstep) chose smoothstep because it is the only form flat at **both** band
+  endpoints while keeping half the band occupied — a linear band reads as an outlined ring, and
+  smootherstep removes the most mask exactly where a contact-anchored shoreline needs the most.
+- **Coverage is a threshold, not a second multiplier.** `noise(world domain) → threshold(1 − coverage) /
+  softness → breakup`, then `support × breakup × intensity → foamMask`. Doubling one authored intent into
+  two roles would make the authored number stop meaning anything, and the areal behaviour is graded against
+  an analytic ramp.
+
+`ShorelineEnabled = 0` reproducing the W3.0 render is measured, not asserted: max channel difference
+`0.00000` over 469,236 owned pixels, with 19,652 band pixels present so the comparison is not between two
+empty frames.
 
 ## Profiles & binding
 
@@ -104,6 +138,12 @@ Mode numbering is a frozen contract; adding a view never renumbers an existing o
 | 8 / 9 | Wave tangent / binormal | diagnostic |
 | 10 | Boundary field encoding (R proximity, G valid, B thickness) | diagnostic |
 | 11 | Boundary validation preview (tint over composite) | diagnostic — **not** a shoreline effect |
+| 12 | Shoreline mask | diagnostic (W3.1 consumer) |
+| 13 | Foam mask | diagnostic (W3.1 consumer) |
+
+Modes 12 and 13 are masks, not appearance; the shoreline and foam evidence published in this repository is
+mode 0. Further diagnostic modes exist in unaccepted work-in-progress code and are not documented here as
+features, because they are not accepted.
 
 Out-of-range mode values resolve safely, and one reserved mode renders a documented neutral value so that
 "no feature" is distinguishable from "feature broken".

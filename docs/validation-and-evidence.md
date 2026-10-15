@@ -15,12 +15,46 @@ Supporting practices that are part of the method, not decoration:
 - **Isolation.** Gates run against a snapshot-restored asset tree; a gate that leaves project assets modified
   is not considered clean. The accepted state reports `isolation_unresolved = 0`.
 - **Preserved failure.** Failing runs are archived with their FAIL rows instead of being overwritten, so the
-  record still shows fail → diagnose → fix → pass. Nine such archives exist for the boundary milestone.
+  record still shows fail → diagnose → fix → pass. Nine such archives exist for the boundary milestone and
+  six for the shoreline/foam milestone.
 - **Verdict integrity guards.** The harness deliberately injects a graded disagreement to prove its own verdict
   guard fires, and logs it, rather than assuming the guard works.
 - **Line-ending discipline.** The project sets `core.autocrlf=true`, which makes a naive dirty-tree check
   over-report after headless runs; drift is classified by content hash, and restores are done by explicit path
   only. This is a real hazard that was documented after it cost work, not a theoretical note.
+
+## Accepted W3.1 shoreline & foam evidence summary (current head of the chain)
+
+| Property | Value |
+|---|---|
+| Graded rows in the authoritative gate table | 342, `result = PASS` on every row |
+| Gates covered | HARNESS + SHF-01…SHF-12 + CAL + BEAUTY + PERF |
+| Regression | 16 gates × 2 independent passes (sequential + isolated), all `PASS`, exit 0 |
+| Isolation | 265 project files snapshotted per gate; `isolation_drifted = 36 == isolation_restored = 36`; `isolation_unresolved = 0`; `files_created_by_gate = 0` |
+| Compile / shader / IO health | `errorCS = 0`, `shaderError = 0`, `ioError = 0` on every row of both passes |
+| Archived failing runs | 6, retained with their FAIL rows |
+
+Representative graded results, with their scope:
+
+- **Disabled identity** — `ShorelineEnabled = 0` reproduces the W3.0 render: max channel difference
+  `0.00000`, differing pixels `0`, alpha differing pixels `0`, over `469,236` owned pixels, with `19,652`
+  band pixels present so the comparison is not between two empty frames.
+- **Shaping** — the shipped curve is flat at both band endpoints (slope `0.00300` near zero, `0.00298` near
+  one, per unit proximity); a 1001-point analytic sweep shows 0 monotonic violations, and the rendered mode-12
+  mask equals the shape of the same pixel's proximity to `0.00033` against a capture floor of `0.00195`.
+- **Areal honesty of coverage** — over a 3×5 softness × coverage grid, measured mean breakup matches the
+  analytic ramp to ≤`3.0e-05`, and the measured non-zero area fraction matches authored coverage to ≤`0.001`.
+- **Authoring cost (CPU-side, explicitly not a GPU claim)** — the graded row
+  `consumersMinusControlTickMs = 0.05606` ms per authored tick, published with its own caveat: the whole
+  payload is rebuilt on every authored tick, so this is rebuild granularity rather than a per-parameter
+  price, and no threshold is asserted around it. The milestone report separately records binder cost at
+  `0.00557 ms/tick` unchanged vs a `0.00519 ms/tick` pre-W3.1 control.
+
+**A published limitation, not hidden:** authored coverage is a *field-level* calibration. The SHF-05 band
+measures `breakupAreaFraction = 0.47995` against a predicted `0.60000`, published as its own rows
+(`breakupAreaPredictionErr = 0.12005`) with no acceptance threshold attached, and its mechanism was
+deliberately not asserted. One should not quote coverage as a promise about the foam-pixel count of any
+particular band.
 
 ## Accepted W3.0 evidence summary
 
