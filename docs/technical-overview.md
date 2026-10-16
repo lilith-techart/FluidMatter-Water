@@ -61,6 +61,13 @@ analytic derivative frame against central differences, and includes a counterfac
 - **Reflection** is a Fresnel-weighted (Schlick) composition against a controlled environment probe. It is
   a **preview** path. It is not screen-space reflection and not planar reflection, and the availability of
   environment content is gated by an explicit flag so the shader never consumes undefined probe data.
+  The portfolio scene exercises that same entry: a **procedurally generated** sky cubemap (this project's own
+  editor generator, not a photographed HDRI) is bound explicitly to the shader's environment texture, with the
+  availability flag set to match. In that headless path the scene's realtime reflection probe still has
+  `texture = null`, so what the water reflects is environment *content*, not the island geometry — no part of
+  the shore, rock or foam silhouette is mirrored. The result is measured rather than asserted: a single-property
+  A/B (`_FMS_EnvironmentReflectionAvailable` 0 → 1) with every differing pixel inside the water mask, plus a
+  debug-mode-6 reading whose sky-direction error is 4.77×/8.01× smaller than its ground-direction error.
 
 ## Boundary field (accepted as data at W3.0)
 

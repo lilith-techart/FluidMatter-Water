@@ -106,6 +106,39 @@ Stating these as gaps, because "we did not measure it" is a different claim from
    rule added in response was to copy each run's artefacts to a timestamped directory before a later run can
    touch them.
 
+## The showcase reflection A/B — what kind of evidence it is
+
+The three newest published images come from a capture harness, **not** from the accepted gate chain, and the
+distinction is not cosmetic. Gate chains grade controlled rigs against a CPU reference of the same maths; this
+run grades one visual claim, in one scene, at 1920×1080. Its status label in the README is therefore
+**Art pass / Work in Progress**, not *accepted*.
+
+What was fixed before the run, in the harness itself, rather than chosen after seeing the pictures:
+
+- **One variable.** The two arms may differ in exactly one shader property, and the harness reports which one
+  (`stateDiff_propertyCount = 1`, `stateDiff_keys = "_FMS_EnvironmentReflectionAvailable"`). A diff of more
+  than one property fails the run rather than being narrated around.
+- **The difference must be on the water.** Differing pixels outside the water mask must be ≤ 0.02 % of the frame
+  and differing pixels inside must be ≥ 99 % of all differences. Measured: `0` outside, share `1`, on both
+  cameras, over `929698` and `993534` water pixels.
+- **The reading must be directional, not global brightness.** A separate debug-mode-6 arm encodes the sampled
+  reflection vector; the criterion is that its error against the *sky* direction be at least 2× better than
+  against the *ground* direction. Measured ratio: `4.769322` (hero), `8.012977` (technical).
+- **Subsurface must survive.** Chromatic water pixels above the cubemap's own stored channel maxima
+  (`0.803922, 0.74902, 0.737255`) must be non-zero in the ON arm and, as a control, zero in the OFF arm.
+  Measured: `3188` / `4989` ON, `0` / `0` OFF.
+- **Nothing else may move.** Foam highlights must not shrink (measured `19.1×` and `11.7×` ON/OFF), caustics must
+  stay disabled in both arms, no magenta and no non-finite pixels, `nonBlackRatio = 1` on the published arms.
+- **The project must be untouched.** The scene file hashes identical before and after
+  (`e0990dacb0d271f0…`), and three re-hash manifests — 56 protected files, 22 accepted profiles, 44 prior
+  screenshots — report `0` mismatches. The harness never marks or saves the scene.
+
+Two consequences of that framing are published rather than hidden. The `OFF` arm renders black water, because a
+preview path with no environment input has nothing to reflect — there is no screen-space or planar fallback to
+soften it. And the conclusions attach to this scene, these two cameras and 1920×1080: they do not extend the
+W3.1 rig's view-angle or resolution envelope, and they do not make the caustics milestone any closer to
+acceptance.
+
 ## Public vs private record
 
 The full development record — gate reports, automation logs, per-run CSVs, diagnostic archives — stays in the

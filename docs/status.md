@@ -35,15 +35,25 @@ CAU 自动化系列），其验收序列仍有未通过的 failing rows。**本�
 
 `FMS_Showcase_Island` 是项目第一个作品集展示场景（岛屿海湾、水体表面、cinematic profile、三台相机）。
 它已被引擎导入、通过结构化校验，并在真实 Tuanjie 编辑器（D3D11、RTX 4070）中以 1920×1080 渲染出三台相机的
-画面。其中一张 **technical** 捕获以 **Development Showcase / Work in Progress** 的名义公开发布，
-README 首图仍然不使用它。
+画面。公开发布了**四张**：两张绑定反射输入后的最新水面帧、一张同机位单变量 A/B 对照图，以及较早那张
+**technical** 捕获（以 **Development Showcase / Work in Progress** 的名义，现在作为 A/B 的 before 状态保留）。
+README 首图仍然不使用它们，仍是 accepted W3.1 技术捕获。
 
-**该图的准确边界（由捕获当帧的材质回读给出，不是事后描述）：** `_FMS_ShorelineEnabled = 1`、
-`_FMS_FoamEnabled = 1`、`_FMS_DebugMode = 0`、**`_FMS_CausticsEnabled = 0`**、
-**`_FMS_EnvironmentReflectionAvailable = 0` 且 `envCube = null`**。也就是说画面里有已接受的岸线与泡沫，
-没有任何焦散，也没有完成天空环境反射输入。
+**最新两张帧的准确边界（由 A/B 当帧的材质回读给出，不是事后描述）：** `_FMS_ShorelineEnabled = 1`、
+`_FMS_FoamEnabled = 1`、`_FMS_EnvironmentReflectionAvailable = 1`、`envCube = FMS_Showcase_SkyCube`、
+`_FMS_DebugMode = 0`、**`_FMS_CausticsEnabled = 0`**。画面里有已接受的岸线与泡沫、有环境反射输入，
+没有任何焦散。反射输入是**本项目程序生成的天空 cubemap**，不是摄影 HDRI；反射路径仍是 **preview**，
+不是 SSR，也不是 planar reflection，水面不镜像岛屿本体。
 
-Hero 封面候选**已渲染但暂不公开**：视觉复审分数低于封面门槛，且正在进行一轮有界的美术修复（反射输入）。
+该结果由一次受控 A/B 支撑：**只有一个 shader 属性不同**（`stateDiff_keys = _FMS_EnvironmentReflectionAvailable`），
+差异像素在两台相机下都**完全落在水体遮罩内**（遮罩外 `0` 个），全部水体像素上的平均通道差 `1.021229` /
+`0.834653`；
+debug mode 6 的独立读数显示天空方向误差比地面方向低 **4.77× / 8.01×**，即"反射天空"而不是"整体变亮"。
+较早那张 technical 帧的边界保持不变，也不被追溯修改：**`_FMS_EnvironmentReflectionAvailable = 0` 且
+`envCube = null`**，也就是说那张图里没有完成天空环境反射输入。
+
+Hero 封面候选**已渲染但暂不公开**：视觉复审分数低于封面门槛。反射输入这一项有界美术修复**已完成并测过**，
+剩下的差距是场景非水体美术仍是 blockout（billboard 地面、平色背景带、占位岩石）。
 水下相机为 **DIAGNOSTIC ONLY**，状态标记 `UNSUPPORTED_CAMERA_VIEW`，其画面作为失败证据保留，不公开发布，
 本仓库也不声称完整水下渲染。
 
@@ -56,11 +66,14 @@ flow map、buoyancy、GPU benchmark、跨 API 认证。
 ## Visual status
 
 **封面：已渲染，暂不公开（NOT PUBLISHED）**。首页图片仍是 accepted W3.1 技术捕获并明确标注为验证 rig；
-展示场景的一张 technical 帧单独放在 Development Showcase 段落。仓库不使用 debug mesh 或诊断色块充当项目
-主视觉，也不使用生成图像。
+展示场景的水面帧放在 README 画廊的 **Art pass / Work in Progress** 标签下，较早的 technical 帧单独放在
+Development Showcase 段落。仓库不使用 debug mesh 或诊断色块充当项目主视觉，也不使用生成图像。
 **NEEDS_CAPTURE（短动态演示）**：尚无 actual-run 视频。
 **水下视图：DIAGNOSTIC ONLY / `UNSUPPORTED_CAMERA_VIEW`**，不发布、不声称功能。
+**焦散图像：不发布**；`_FMS_CausticsEnabled = 0` 写在每张已发布图片的当帧回读里。
 未使用任何生成图像冒充引擎运行结果；若使用程序生成的环境素材，会明确标注为程序生成，而不宣称为摄影 HDRI。
+最新两张水面帧的反射输入就是这种素材：`FMS_Showcase_SkyCube` 由本项目编辑器内的生成器程序生成，
+其 SHA-256 与生成时记录的 accepted run 一致，并且只作为天空内容被采样。
 
 ## Validation scope
 
@@ -69,7 +82,8 @@ Tuanjie 1.10.4（Unity 兼容版本 2022.3.62t16）、URP 14.2.0-t1、D3D11、�
 
 ## Roadmap
 
-完成 W4.0 焦散验证 → showcase 场景美术收口（已渲染；封面候选等待反射输入修复后复审）→ 补真实 cover 与短动态
+完成 W4.0 焦散验证 → showcase 场景美术收口（已渲染；反射输入已绑定并测过，封面候选的差距现在是非水体
+blockout 美术）→ 补真实 cover 与短动态
 → 如需性能结论则单独设计 Player/GPU 测量。
 
 ## Distribution
