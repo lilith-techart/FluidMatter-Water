@@ -7,7 +7,7 @@ quantity, and an automated gate that measures the result instead of a screenshot
 right from one angle.
 
 **Status:** W0 – W3.1 accepted (see [validation scope](#how-much-of-this-is-measured)) ·
-W4.0 caustics implemented, **validation pending** · portfolio scene rendering, **art pass in progress** ·
+W4.0 caustics **validation pending / not accepted** · LookDev 001 A7/C measured, art pass in progress ·
 research prototype, not a product.
 
 ![Two Gerstner waves meeting a shoreline: displaced surface silhouette, foam band following the crest, depth-driven absorption](media/showcase/w31_gerstner_two_wave_shoreline.png)
@@ -16,11 +16,17 @@ research prototype, not a product.
 the shoreline band and the noise-broken foam layer, from the **accepted W3.1** validation rig. It is an
 honest technical capture, not an art pass.*
 
-*Why this is still the front image:* the project's portfolio scene has since been rendered, and its newest
-frames are better-looking water — see
-[Gallery](#gallery--newest-first). But the surrounding scenery in that scene is still a blockout, so those
-frames are published as **art pass in progress** rather than promoted to cover. The cover is decided on the
-look, not on what is newest.
+*Why this is still the front image:* it is an **accepted W3.1** capture. The newest A7
+Clear Lagoon and C Stylized Shoreline were really rendered at 1920×1080 and showed
+clear progress, but their original PNGs have **not yet been uploaded here**.
+The older R03 reflection images have since failed a capture-state audit and are no
+longer used as appearance evidence. No substitute or synthetic image is shown.
+
+**New research:** [Oct 2026 water LookDev — measured parameter ladder,
+A7/C visual selection and known limits](docs/lookdev-2026-10.md). Absorption sigma
+reordering moved the technical water-mask B−R from **−0.0716 to +0.2504**;
+the A7 candidate reaches **+0.2617**, with no production Shader modification.
+LookDev scores are subjective and separate from acceptance gates.
 
 ---
 
@@ -30,19 +36,15 @@ Every image below is a real capture from this project's own engine runs. None is
 marketing render, and no diagnostic view is presented as finished appearance. Every caption says which
 milestone produced it and whether it is **accepted** or **work in progress**.
 
-### Water appearance — portfolio scene, newest verified result
+### Latest LookDev — Clear Lagoon (A7) / Stylized Shoreline (C)
 
-`FMS_Showcase_Island`, rendered in the real Tuanjie editor, 1920×1080, wave phase frozen at `t = 14 s`. These
-are the newest frames and the first ones with a completed environment reflection input: a procedurally
-generated sky cubemap (`FMS_Showcase_SkyCube`, not a photographed HDRI) bound through the same profile →
-binder → `_FMS_*` path the accepted build uses. Material read back at capture time:
-`_FMS_WaveCount = 4`, `_FMS_ShorelineEnabled = 1`, `_FMS_FoamEnabled = 1`, `_FMS_FoamCoverage = 0.42`,
-`_FMS_EnvironmentReflectionAvailable = 1`, `_FMS_DebugMode = 0`, **`_FMS_CausticsEnabled = 0`**.
-
-| | |
-|---|---|
-| ![Island lagoon from the technical camera with the sky reflection input bound: foam rings around the shallows, displaced four-wave surface](media/showcase/showcase_island_reflection_on_technical.png) | **Lagoon, `Camera_Technical`, reflection input on.** Four Gerstner slots displaced, shoreline band and noise-broken foam around the shallows, and the sky now present in the reflection term instead of the surface having nothing to reflect. This is the **same camera and pose** as the [Development Showcase](#development-showcase--work-in-progress) frame below, so the two can be compared directly. <br> Showcase scene · mode **0 = final composite** · **Art pass / Work in Progress** — the water systems on display are accepted; the art pass around them has no acceptance milestone |
-| ![Low grazing view across the bay toward the island, sky reflection dominating the water surface](media/showcase/showcase_island_reflection_on_hero.png) | **Bay, `Camera_Hero`, reflection input on.** A grazing-angle view: the Fresnel term goes to the reflection side, so the surface reads as sky. The honest cost of that is less seabed and refraction detail than the technical view — the reflection is environment content, not screen-space or planar reflection, and no ray tracing is involved. <br> Showcase scene · mode **0** · **Art pass / Work in Progress** · not published as the cover |
+The latest 12-arm real-engine study compared absorption, tint, normals, refraction,
+shoreline and foam with fixed cameras and time. **A7 is the preferred natural-looking
+candidate; C is the stylized comparison.** Original A7/C PNGs are still awaiting
+hash-verified upload from the development workspace. See the
+[measured study](docs/lookdev-2026-10.md). The historic R03 Reflection_ON frames
+were withdrawn from the featured gallery after a captured Fresnel-state leak was
+identified: they do **not** prove correct transparent-water composition.
 
 ### Shoreline & foam — accepted W3.1
 
@@ -67,15 +69,13 @@ scene.
 
 | | |
 |---|---|
-| ![Two by two comparison: top row technical camera with the reflection input off then on, bottom row hero camera off then on](media/showcase/showcase_island_reflection_ab_same_camera.jpg) | **Reflection input off / on, same camera, one variable.** Top row = `Camera_Technical`, bottom row = `Camera_Hero`; left = `_FMS_EnvironmentReflectionAvailable = 0`, right = `1`. Exactly **one** shader property differs between the columns, and every differing pixel in both arms falls inside the water mask (0 outside it). With the input off the water body renders black — that is the honest statement that this path has no screen-space or planar fallback, not a bug hidden by cropping. Unlabelled and half-scale: pixels are nearest-sampled from the four 1920×1080 arms, nothing is painted or colour-graded. <br> Showcase scene · mode **0** · **Art pass / Work in Progress** · measured single-variable A/B |
 | ![Same camera, two states: shoreline and foam consumers off (A) and on (B)](media/showcase/w31_consumers_off_on_same_camera.png) | **What the W3.1 consumer actually changes — same camera, nothing else different.** Panel A is the W3.0 state with the consumers off; panel B is the accepted W3.1 state with them on. The pair is one pose differing only in two enable flags, which is why it can be compared at all. <br> Milestone **W3.1** · mode **0** · **accepted** · *assembled figure: two unmodified captures, resized and labelled, no pixels painted* |
 | ![One view rendered three ways: composite, boundary field encoding, validation preview](media/boundary-same-view-three-readings.png) | **One view, three readings.** A = what the build draws. B = the boundary *field* (R proximity, G validity, B normalised thickness). C = a validation tint. Panels B and C are **diagnostic views, not appearance** — they show the data a consumer reads, which is the point of the architecture. <br> Milestone **W3.0** · modes 0 / 10 / 11 · **accepted** · assembled figure |
 | ![Gerstner two-wave superposition with the rig's analytic reference curves](media/gerstner-wave-mesh.png) | **Engineering proof, not a look.** Multi-wave superposition against the harness's CPU reference; the green/blue polylines are the rig's own analytic curves. Published because "the GPU agrees with an independent implementation" is a claim worth showing. <br> Milestone **W2.1** · mode **0** · **accepted** · technical evidence |
 
-**What is deliberately missing from this gallery:** a beauty cover, a video, any caustics image, and any
-underwater frame. The portfolio scene's older technical capture is kept in its own section below,
-[Development Showcase — Work in Progress](#development-showcase--work-in-progress), because it predates the
-reflection input and is not a finished look.
+**Still missing:** the newly reviewed A7/C raw pictures (pending upload), a
+final beauty cover, a motion reel, caustics acceptance and a supported underwater
+view. Historical R03 reflection frames remain in git only for provenance.
 
 ---
 
@@ -89,15 +89,11 @@ progress**, not as the cover.
 
 **Shoreline and Foam — Development Showcase** / Real Tuanjie URP render demonstrating the previously validated shoreline and foam system inside an experimental island environment. The showcase art pass is ongoing; caustics are disabled and the environment reflection input has not yet been completed in this capture.
 
-Provenance, added so the label cannot drift: 1920×1080 single-frame capture from this project's own Tuanjie
-editor on D3D11, byte-exact copy of the engine output (SHA-256 `66fd061306b5ad97…`, full value in
-[media attribution](docs/media-attribution.md)). What this image **is not**: a Final Hero, an accepted W4.0
-result, physically accurate caustics, final commercial art, or a GPU benchmark. It is kept here as the
-**before** state: this frame was captured with no environment reflection input bound, and the two newer frames
-in [Water appearance](#water-appearance--portfolio-scene-newest-verified-result) are the same scene and cameras
-after that input was bound and measured. The art-directed cover candidate from this scene is rendered but
-**not published** — the surrounding scenery is still a blockout, so it does not meet the cover bar. The scene's
-underwater camera view is diagnostic only and is not part of the portfolio.
+Provenance: an earlier real 1920×1080 Tuanjie render, source SHA-256
+`66fd061306b5ad97…`. It predates environment-cubemap binding and has
+placeholder scenery. **Not** an accepted beauty image, underwater system,
+caustics result or GPU benchmark. For the newer A7/C colour study see
+[LookDev 001](docs/lookdev-2026-10.md).
 
 ---
 
@@ -177,12 +173,12 @@ Stated as gaps, not as settled conclusions.
 7. **Caustics are not accepted.** A caustics consumer exists in the working tree and is under its own
    validation series with unresolved failing rows. Nothing here claims physically accurate caustics, flux
    conservation, or a finished underwater look.
-8. **There is no accepted beauty pass yet.** Every accepted image comes from a controlled test rig with known
-   geometry and flat unlit scenery, chosen so the measurements mean something. The four images from the art
-   scene (`FMS_Showcase_Island`) are published as **work in progress**, not as an accepted look: the newest two
-   have the environment reflection input bound, the A/B sheet shows both states of that input, and the earlier
-   single frame predates it. The scene's non-water art is still a blockout, which is why none of them is the
-   cover.
+8. **The newest valid water look is still private.** A7/C were captured in
+   the real engine but original media have not yet been posted. The former
+   R03 reflection screenshots suffered capture-state contamination
+   (FresnelF0=1, ReflectionStrength=1); they are not valid evidence of a
+   finished transparent-water composite. The showcase environment remains
+   a blockout.
 
 ---
 
@@ -199,14 +195,11 @@ A term appearing in a roadmap, a design note, or an in-progress source file is n
 
 ## Visual status — what is not here yet
 
-**Beauty cover: NOT PUBLISHED.** The project's art-directed water scene (`FMS_Showcase_Island`) has been
-rendered in the real engine, and four images from it are
-[published above as work in progress](#water-appearance--portfolio-scene-newest-verified-result). The one
-bounded art fix that was outstanding — the environment reflection input — has been bound and measured with a
-single-variable A/B, and the result is the newest frames in the gallery. The Hero cover candidate still scores
-below the bar for a cover, because the scene's non-water art is a blockout rather than finished environment
-art, so it is **held back** instead of posted and the front image stays an accepted W3.1 technical capture.
-Labeling these frames "work in progress" is the state, not a hedge.
+**Beauty cover: NOT PUBLISHED.** A7 Clear Lagoon has been selected as the
+next art direction and has real engine captures, but its original PNGs still
+need a verified media upload and the environment art is unfinished.
+Do not represent the earlier R03 reflection test images as final water
+appearance. The current cover stays an accepted W3.1 rig capture.
 
 **Underwater view: DIAGNOSTIC ONLY.** A third camera looks from below the surface. Its captures are kept as
 internal failure evidence and the status token is `UNSUPPORTED_CAMERA_VIEW`. Nothing here claims full
@@ -233,6 +226,6 @@ scenes, shaders and engine/package content are not distributed here, and public 
 open-source licence. Third-party engine and pipeline names belong to their respective rights holders.
 See [media attribution](docs/media-attribution.md) for per-image provenance and integrity hashes.
 
-**More detail:** [technical overview](docs/technical-overview.md) ·
+**More detail:** [Latest LookDev](docs/lookdev-2026-10.md) · [technical overview](docs/technical-overview.md) ·
 [validation & evidence](docs/validation-and-evidence.md) · [status & limitations](docs/status.md) ·
 [media attribution](docs/media-attribution.md)
