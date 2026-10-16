@@ -5,12 +5,24 @@ validation rig or, for the portfolio-scene frames below, in the project's showca
 AI-generated, no image is a marketing render, and no diagnostic view is presented as finished appearance.
 Copies retain the source pixels; where a figure is assembled, that is stated below.
 
-## Showcase Island — reflection input bound (art pass in progress, published 2026-10-16)
+> **Correction (2026-10-16):** The R03 `Reflection_ON` captures below
+> were later found to have a **capture-state leak**: the runtime material
+> clone had `FresnelF0=1` and `ReflectionStrength=1`, suppressing the
+> transmitted water-colour term. These files remain **only as historical
+> debug/provenance media**, not as correct final-composite beauty results.
+> They have been removed from the featured README gallery. Claims below
+> that R03 establishes natural transparent-water appearance or correct
+> coexistence of absorption and reflection are **withdrawn**. Binding a
+> cubemap and measuring a controlled A/B is not the same as proving a
+> correct-looking water composite. The original pixels/hashes are not
+> modified. See [LookDev 001](lookdev-2026-10.md).
+
+## Historical R03 captures — reflection interface test, invalid as final water appearance
 
 | File | Source capture | Milestone / status | Debug mode | Role |
 |---|---|---|---|---|
-| `showcase/showcase_island_reflection_on_technical.png` | `Assets/FluidMatter/Showcase/Screenshots/R03_Technical_Reflection_ON.png` | `FMS_Showcase_Island`; W3.1 systems accepted, **art pass in progress**, reflection input bound and measured | 0 = final composite | **Newest water-appearance frame.** `Camera_Technical` (position `8, 12, 18`, euler `24.18927, 243.9464, 0`, FOV 38°, near/far 0.1/200), 1920×1080, wave phase frozen at `t = 14 s`. Same camera and pose as `showcase_island_technical_wip.png` below |
-| `showcase/showcase_island_reflection_on_hero.png` | `…/R03_Hero_Reflection_ON.png` | same | 0 = final composite | Grazing-angle view from `Camera_Hero` (position `-16, 6, 8`, euler `9.625748, 122.0054, 0`, FOV 40°, near/far 0.1/160), 1920×1080, `t = 14 s`. **Not the cover** — published as work in progress |
+| `showcase/showcase_island_reflection_on_technical.png` | `Assets/FluidMatter/Showcase/Screenshots/R03_Technical_Reflection_ON.png` | `FMS_Showcase_Island`; W3.1 systems accepted, **art pass in progress**, reflection input bound and measured | 0 = final composite | **WITHDRAWN AS BEAUTY EVIDENCE.** `Camera_Technical` (position `8, 12, 18`, euler `24.18927, 243.9464, 0`, FOV 38°, near/far 0.1/200), 1920×1080, wave phase frozen at `t = 14 s`. Same camera and pose as `showcase_island_technical_wip.png` below |
+| `showcase/showcase_island_reflection_on_hero.png` | `…/R03_Hero_Reflection_ON.png` | same | 0 = final composite | Grazing-angle view from `Camera_Hero` (position `-16, 6, 8`, euler `9.625748, 122.0054, 0`, FOV 40°, near/far 0.1/160), 1920×1080, `t = 14 s`. **WITHDRAWN AS BEAUTY EVIDENCE** — historical capture only |
 | `showcase/showcase_island_reflection_ab_same_camera.jpg` | `…/R03_Reflection_Comparison.jpg` | same | 0 = final composite | **Assembled figure, and it is the measurement.** 2×2: top row `Camera_Technical` OFF then ON, bottom row `Camera_Hero` OFF then ON, from the four 1920×1080 arms, half-scale nearest-neighbour, no text, no colour change. 1944×1104 |
 
 What these three frames are claiming, and the number that backs it: they are two arms of a controlled A/B in
