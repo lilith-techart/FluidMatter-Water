@@ -10,17 +10,11 @@ right from one angle.
 W4.0 caustics **validation pending / not accepted** · LookDev 001 A7/C measured, art pass in progress ·
 research prototype, not a product.
 
-![Two Gerstner waves meeting a shoreline: displaced surface silhouette, foam band following the crest, depth-driven absorption](media/showcase/w31_gerstner_two_wave_shoreline.png)
+![A7 Clear Lagoon — real Tuanjie URP render, 1920×1080, debug mode 0](media/showcase/lookdev_a7_clear_lagoon.png)
 
-*Actual engine capture, debug mode 0 (final composite), 1280×720. Shows Gerstner surface displacement,
-the shoreline band and the noise-broken foam layer, from the **accepted W3.1** validation rig. It is an
-honest technical capture, not an art pass.*
+*Real engine capture from the LookDev 001 study: A7 Clear Lagoon candidate, 1920×1080, debug mode 0 (final composite). Shows absorption sigma `(0.65, 0.30, 0.13)` producing blue-transmitting water, shoreline foam and layered normals. **LookDev Candidate / Real Tuanjie Capture / Work in Progress** — not an accepted beauty cover.*
 
-*Why this is still the front image:* it is an **accepted W3.1** capture. The newest A7
-Clear Lagoon and C Stylized Shoreline were really rendered at 1920×1080 and showed
-clear progress, but their original PNGs have **not yet been uploaded here**.
-The older R03 reflection images have since failed a capture-state audit and are no
-longer used as appearance evidence. No substitute or synthetic image is shown.
+*Why this replaces the previous placeholder text:* the three original A7/C PNGs have now been hash-verified and uploaded. The front image remains the accepted W3.1 rig capture above; this A7 frame is the newest measured appearance evidence but the environment art is still a blockout. The older R03 reflection images remain withdrawn from the gallery.
 
 **New research:** [Oct 2026 water LookDev — measured parameter ladder,
 A7/C visual selection and known limits](docs/lookdev-2026-10.md). Absorption sigma
@@ -40,11 +34,17 @@ milestone produced it and whether it is **accepted** or **work in progress**.
 
 The latest 12-arm real-engine study compared absorption, tint, normals, refraction,
 shoreline and foam with fixed cameras and time. **A7 is the preferred natural-looking
-candidate; C is the stylized comparison.** Original A7/C PNGs are still awaiting
-hash-verified upload from the development workspace. See the
-[measured study](docs/lookdev-2026-10.md). The historic R03 Reflection_ON frames
-were withdrawn from the featured gallery after a captured Fresnel-state leak was
-identified: they do **not** prove correct transparent-water composition.
+candidate; C is the stylized comparison.** Original A7/C PNGs have been hash-verified
+and uploaded. See the [measured study](docs/lookdev-2026-10.md). The historic R03
+Reflection_ON frames were withdrawn from the featured gallery after a captured
+Fresnel-state leak was identified: they do **not** prove correct transparent-water
+composition.
+
+| | |
+|---|---|
+| ![A7 Clear Lagoon hero view — real Tuanjie URP render, 1920×1080](media/showcase/lookdev_a7_clear_lagoon.png) | **A7 — Clear Lagoon (Hero).** Real engine capture at 1920×1080, debug mode 0. Absorption sigma `(0.65, 0.30, 0.13)` produces blue-transmitting water with shoreline foam and layered normals. <br> **LookDev Candidate / Real Tuanjie Capture / Work in Progress** · source SHA `275cbfd1…` |
+| ![A7 Clear Lagoon technical view — depth, refraction and shoreline](media/showcase/lookdev_a7_technical.png) | **A7 — Technical View.** Same candidate from the technical camera, showing depth-driven absorption, screen-space refraction offset and the shoreline contact band. <br> **LookDev Candidate / Real Tuanjie Capture / Work in Progress** · source SHA `2e74cd71…` |
+| ![C Stylized Shoreline hero view — rule-based foam and normal control](media/showcase/lookdev_c_stylized_shoreline.png) | **C — Stylized Shoreline (Hero).** Real engine capture at 1920×1080. Demonstrates stylized foam coverage, boundary-driven shoreline and two-layer normal control. The regular point-grid pattern visible in the foam is a known limitation of the current noise texture. <br> **LookDev Candidate / Real Tuanjie Capture / Work in Progress** · source SHA `cc8f4eae…` |
 
 ### Shoreline & foam — accepted W3.1
 
@@ -73,9 +73,9 @@ scene.
 | ![One view rendered three ways: composite, boundary field encoding, validation preview](media/boundary-same-view-three-readings.png) | **One view, three readings.** A = what the build draws. B = the boundary *field* (R proximity, G validity, B normalised thickness). C = a validation tint. Panels B and C are **diagnostic views, not appearance** — they show the data a consumer reads, which is the point of the architecture. <br> Milestone **W3.0** · modes 0 / 10 / 11 · **accepted** · assembled figure |
 | ![Gerstner two-wave superposition with the rig's analytic reference curves](media/gerstner-wave-mesh.png) | **Engineering proof, not a look.** Multi-wave superposition against the harness's CPU reference; the green/blue polylines are the rig's own analytic curves. Published because "the GPU agrees with an independent implementation" is a claim worth showing. <br> Milestone **W2.1** · mode **0** · **accepted** · technical evidence |
 
-**Still missing:** the newly reviewed A7/C raw pictures (pending upload), a
-final beauty cover, a motion reel, caustics acceptance and a supported underwater
-view. Historical R03 reflection frames remain in git only for provenance.
+**Still missing:** a final beauty cover (A7 environment art is still blockout),
+a motion reel, caustics acceptance and a supported underwater view. Historical R03
+reflection frames remain in git only for provenance.
 
 ---
 
@@ -173,9 +173,9 @@ Stated as gaps, not as settled conclusions.
 7. **Caustics are not accepted.** A caustics consumer exists in the working tree and is under its own
    validation series with unresolved failing rows. Nothing here claims physically accurate caustics, flux
    conservation, or a finished underwater look.
-8. **The newest valid water look is still private.** A7/C were captured in
-   the real engine but original media have not yet been posted. The former
-   R03 reflection screenshots suffered capture-state contamination
+8. **The newest valid water look is now published.** A7/C were captured in
+   the real engine and original media have been hash-verified and uploaded.
+   The former R03 reflection screenshots suffered capture-state contamination
    (FresnelF0=1, ReflectionStrength=1); they are not valid evidence of a
    finished transparent-water composite. The showcase environment remains
    a blockout.
@@ -196,10 +196,10 @@ A term appearing in a roadmap, a design note, or an in-progress source file is n
 ## Visual status — what is not here yet
 
 **Beauty cover: NOT PUBLISHED.** A7 Clear Lagoon has been selected as the
-next art direction and has real engine captures, but its original PNGs still
-need a verified media upload and the environment art is unfinished.
-Do not represent the earlier R03 reflection test images as final water
-appearance. The current cover stays an accepted W3.1 rig capture.
+next art direction and its original PNGs have been hash-verified and uploaded,
+but the environment art is unfinished. Do not represent the earlier R03
+reflection test images as final water appearance. The current cover stays an
+accepted W3.1 rig capture.
 
 **Underwater view: DIAGNOSTIC ONLY.** A third camera looks from below the surface. Its captures are kept as
 internal failure evidence and the status token is `UNSUPPORTED_CAMERA_VIEW`. Nothing here claims full

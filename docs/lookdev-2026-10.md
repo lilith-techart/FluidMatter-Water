@@ -6,7 +6,7 @@
 
 The previous water was identifiable but too flat. Instead of replacing the rendering system, we compared water absorption, shallow/deep colour, two surface-normal layers, refraction, shoreline and foam in a fixed scene. The study used **12 controlled arms**, **74 real engine PNG captures**, and **6 contact sheets** at **1920 × 1080**, fixed cameras and wave time (t = 14), on D3D11 / RTX 4070.
 
-The most recent raw A7/C image files remain in the private development workspace, pending a separate, hash-verified binary upload. **This public document does not pretend they are hosted here.**
+The original raw A7/C image files have been hash-verified and uploaded to this repository under `media/showcase/`. See the [README gallery](../README.md#latest-lookdev--clear-lagoon-a7--stylized-shoreline-c) for the actual images.
 
 ## Real measured LookDev results
 
@@ -42,12 +42,13 @@ The temporary procedural normal assets visibly repeat as cross-hatch/dots at gra
 
 **GPU time remains unknown.** The existing headless camera.Render/ReadPixels harness cannot resolve shader deltas above its timing noise. Do not reuse these data as FPS or GPU milliseconds.
 
-## Provenance for the next image publication
+## Provenance for the published images
 
-Original captures to upload byte-exactly from the owner-approved local handoff:
+Original captures uploaded byte-exactly from the owner-approved local handoff:
 
-- A7 hero: `R5/LD_R5_A7_hero.png`, SHA-256 `275cbfd13673c3d9c4849216061289e7995c6a8ea6b95ab922602bd0eb9177ad`
-- A7 technical: `R5/LD_R5_A7_technical.png`, SHA-256 `2e74cd7143a6342f24aa9027bb395895a6a7e888f62207da35335eeb3a8d668b`
+- A7 hero: `R5/LD_R5_A7_hero.png`, SHA-256 `275cbfd13673c3d9c4849216061289e7995c6a8ea6b95ab922602bd0eb9177ad` → `media/showcase/lookdev_a7_clear_lagoon.png`
+- A7 technical: `R5/LD_R5_A7_technical.png`, SHA-256 `2e74cd7143a6342f24aa9027bb395895a6a7e888f62207da35335eeb3a8d668b` → `media/showcase/lookdev_a7_technical.png`
+- C hero: `R5/LD_R5_C_hero.png`, SHA-256 `cc8f4eae9b29e485d9656b8d93561e05b85396652d1f954612274825d7348280` → `media/showcase/lookdev_c_stylized_shoreline.png`
 - C hero: `R5/LD_R5_C_hero.png`, SHA-256 `cc8f4eae9b29e485d9656b8d93561e05b85396652d1f954612274825d7348280`
 
 **Caption guardrail:** R8 debug modes M2 (thickness) and M3 (transmittance) belong to the **A0 baseline**, not A7. A0's transmittance order is R > G > B; A7's ordered sigma implies the opposite ordering at equal positive thickness.

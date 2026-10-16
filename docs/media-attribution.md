@@ -147,6 +147,9 @@ showcase_island_reflection_on_hero.png        7c40893ccd7cdc22b1a038abcacf1b46bf
 showcase_island_reflection_on_technical.png   509bde1ddb8eb7a63c194da4949d97a10900d2fd81ec80dacff5c713b68931ec
 showcase_island_reflection_ab_same_camera.jpg 387507b40eac617f277f6db6279800e321e815eb8cf855357b468a12cf88e9b6
 showcase_island_technical_wip.png             66fd061306b5ad97eba3b6e0da469363df08e5cf1511bc57bfa49d268505d5f9
+lookdev_a7_clear_lagoon.png                   275cbfd13673c3d9c4849216061289e7995c6a8ea6b95ab922602bd0eb9177ad
+lookdev_a7_technical.png                      2e74cd7143a6342f24aa9027bb395895a6a7e888f62207da35335eeb3a8d668b
+lookdev_c_stylized_shoreline.png              cc8f4eae9b29e485d9656b8d93561e05b85396652d1f954612274825d7348280
 ```
 
 For the three newest frames the same digests are recorded by the capture harness itself in
@@ -167,6 +170,14 @@ The two newest PNGs (`showcase_island_reflection_on_hero.png`, `showcase_island_
 were copied and `cmp`-verified the same way. `showcase_island_reflection_ab_same_camera.jpg` is different in
 kind and is flagged as such: it is the **harness's own** 2×2 sheet, assembled from the four in-memory arm
 buffers by the capture code (half-scale nearest-neighbour blits, 8 px gutters, no text, no colour change) and
+
+The three LookDev 001 candidate images (`lookdev_a7_clear_lagoon.png`, `lookdev_a7_technical.png`,
+`lookdev_c_stylized_shoreline.png`) are **byte-exact copies** of their development-tree sources
+(`Assets/FluidMatter/Showcase/LookDev_001/Screenshots/R5/LD_R5_A7_hero.png`,
+`LD_R5_A7_technical.png`, `LD_R5_C_hero.png` respectively), verified by SHA-256 digest match above.
+They were captured at 1920×1080, debug mode 0, wave time t=14 s, D3D11 / RTX 4070, Gamma colour space,
+pipeline `FMS_W0_URP`. No recolouring, AI upscaling, or post-processing was applied. These are
+**LookDev Candidate / Work in Progress** captures — not accepted beauty covers.
 encoded as JPEG at quality 92 — the only lossy file published here, chosen because it is a comparison sheet
 rather than a pixel-exact claim. Its constituent frames are available losslessly in the development tree, and
 its digest is the one the harness recorded.
